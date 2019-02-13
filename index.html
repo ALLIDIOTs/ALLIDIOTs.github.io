@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Click mania</title>
+    <style>
+    img{
+      width: 30%;
+      margin: 0 auto;
+      flex-wrap: warp;
+      transition: 0.2s;
+      animation-duration: 2s;
+      animation-name: fadeIn;
+    }
+    img:active{
+      transform: scale(1.2);
+    }
+    @keyframes fadeIn{
+      0%{
+        opacity: 0;
+        transform: scale(0);
+      }
+      100%{
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    </style>
+  </head>
+  <body>
+    <main class = "gameplay">
+      <h2 class="title">Clickeria - click to back a Pizza!</h2>
+      <img src="https://i.imgur.com/8btzgzF.jpg" onclick = "addMoney(amountPerClick)" width = 200>
+      <h4>Current Money: <span id="moneyValue">0</span></h4>
+      <h4 id = "progreeseText"></h4>
+      <div class= "upgradeArea">
+        <div class="pizzaPrice">
+          <p>Your pizza sells for $<span id="currentPizzaPrice">2</span>!</p>
+          <button onclick="increaseSellingPrice();">Click to Increase Price! <span id="priceSpan">($0)</span></button>
+        </div>
+      </div>
+    </main>
+
+    <script>
+      const currentMoney = document.getElementById('moneyValue');
+      const currentPizzaPrice = document.getElementById('currentPizzaPrice');
+      const priceSpan = document.getElementById('priceSpan');
+      const progreeseText = document.getElementById('progreeseText');
+      const messageList = ["You're selling pizza slices from a stand on the sidewalk. We gotta start somewhere, right?",
+                           "Hey look, your pizza stand is starting to get more custtomers! keep this up and you'll have your own pizzeria someday!",
+                           "CONGRATS! You just rented your first pizzeria location!",
+                           "Wow, this place sure is starting to get busy. keep it up and you might have another location to seat all these custtomers!",
+                           "A 2nd location?? Great job, your pizza empire is really growing now!"];
+      progreeseText.innerHTML = messageList[0];
+      var money = 0;
+      var moneyOverLifetime = 0;
+      var amountPerClick = 2;
+      var costToUpgrade;
+
+      function addMoney(amountToAdd){
+        money += amountToAdd;
+        moneyOverLifetime += amountToAdd;
+        currentMoney.innerHTML = money;
+        updateProgreeseMessage();
+      }
+
+      function deductMoney(amountToDeduct){
+        money -= amountToDeduct;
+        currentMoney.innerHTML = money;
+      }
+
+      function increaseSellingPrice(){
+        costToUpgrade = 50 * parseInt(currentPizzaPrice.innerHTML);
+
+        if(money >= costToUpgrade){
+          deductMoney(costToUpgrade);
+          amountPerClick += 2;
+          currentPizzaPrice.innerHTML = amountPerClick;
+        }
+        costToUpgrade = 50 * parseInt(currentPizzaPrice.innerHTML);
+        priceSpan.innerHTML = "($ " + costToUpgrade + ")";
+      }
+      function updateProgressMessage(){
+        if (moneyOverLifetime >= 100000)
+          progreeseText.innerHTML = messageList[4];
+        else if (moneyOverLifetime >= 85000)
+         progreeseText.innerHTML = messageList[3];
+        else if (moneyOverLifetime >= 5000)
+         progreeseText.innerHTML = messageList[2];
+        else if (moneyOverLifetime >= 30000)
+         progreeseText.innerHTML =messageList[1];
+        else if (moneyOverLifetime >= 10000)
+         progreeseText.innerHTML = messageList[0];
+      }
+
+    </script>
+  </body>
+</html>
